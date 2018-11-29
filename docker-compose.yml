@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+
+  revealjs:
+    image: $REVEALJS
+    container_name: "${PROJECT_NAME}_revealjs"
+#    ports:
+#      - "8000:8000"
+#      - "35729:35729"
+    volumes:
+      - $PROJECT_DOCROOT/slides:/slides
+    labels:
+      - 'traefik.backend=${PROJECT_NAME}_revealjs'
+      - 'traefik.port=8000'
+      - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
+
+  portainer:
+    image: portainer/portainer
+    container_name: "${PROJECT_NAME}_portainer"
+    command: --no-auth -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - 'traefik.backend=${PROJECT_NAME}_portainer'
+      - 'traefik.port=9000'
+      - 'traefik.frontend.rule=Host:portainer.${PROJECT_BASE_URL}'
+
+  traefik:
+    image: traefik
+    container_name: "${PROJECT_NAME}_traefik"
+    command: -c /dev/null --web --docker --logLevel=INFO
+    ports:
+      - '80:80'
+      - '8080:8080' # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
