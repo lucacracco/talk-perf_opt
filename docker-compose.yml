@@ -5,9 +5,9 @@ services:
   revealjs:
     image: $REVEALJS
     container_name: "${PROJECT_NAME}_revealjs"
-#    ports:
-#      - "8000:8000"
-#      - "35729:35729"
+    ports:
+      # Used for notify changes.
+      - "35729:35729"
     volumes:
       - $PROJECT_DOCROOT/slides:/slides
     labels:

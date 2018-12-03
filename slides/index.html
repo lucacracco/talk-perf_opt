@@ -31,7 +31,7 @@
 <div class="reveal">
     <div class="slides">
         <section>
-            <h1><del>Sexual</del> performance optimisation</h1>
+            <h1><!--<del>Sexual</del>--> performance optimisation</h1>
             <h3>for Drupal and not only</h3>
             <p>
                 <small>
@@ -39,7 +39,371 @@
                 </small>
             </p>
         </section>
-        <section>Slide 2</section>
+        <!-- First step -->
+        <section>
+            <section>
+                <h2>Start!</h2>
+            </section>
+            <section>
+                <h3>Why?</h3>
+                <ul>
+                    <li>fast is better than slow</li>
+                    <li>memory efficient is good</li>
+                    <li>saving money is good</li>
+                    <li>running out of memory in production is bad</li>
+                </ul>
+            </section>
+            <section>
+                <h3>When?</h3>
+                <ul>
+                    <li>before the project itself</li>
+                    <li>regardless of the environment: production, development,
+                        ...
+                    </li>
+                    <li>at every modification or update</li>
+                </ul>
+            </section>
+            <section>
+                <h3>How?</h3>
+                <ul>
+                    <li>the logic in the code is very important</li>
+                    <li>write good code</li>
+                    <li>check and test</li>
+                    <li>optimize the infrastructure</li>
+                    <li>integration with third system</li>
+                </ul>
+            </section>
+        </section>
+        <!-- Second step -->
+        <section>
+            <section>
+                <h2>PHP optimisation</h2>
+            </section>
+            <section>
+                <p>Some examples or tips:</p>
+                <ul>
+                    <li>use last php version</li>
+                    <li>use native function</li>
+                    <li>use single quotes or double quotes</li>
+                    <li>use ===</li>
+                    <li>use absolute path</li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>use appropriate str function</li>
+                    <li>use regex/don't use regex</li>
+                    <li>calculate only once</li>
+                    <li>pass reference to function</li>
+                    <li>create classes only when it required</li>
+                    <li>disable debugging message</li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>lower the usage of global variables</li>
+                    <li>use caching templates</li>
+                    <li>clone the connection</li>
+                    <li>reduce hits to database</li>
+                    <li>use json instead of xml</li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>use empty() where ever possible instead of using
+                        count(), strlen(), sizeof() to check whether the value
+                        returned is greater than 0
+                    </li>
+                    <li>use $a === $b instead of strcmp($a, $b) === 0</li>
+                    <li>don't use count in condition section (es. for ($x = 0;
+                        $x < count($array); $x++))
+                    </li>
+                    <li>maximize the use of static methods/properties (There is
+                        only a minor difference between static & non-static
+                        properties that non-static skips the crucial step of
+                        object initialization which makes them faster over
+                        static ones.)
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>use foreach > for > while</li>
+                    <li>use echo(), print(), comma(), printf() and sprintf()
+                    </li>
+                    <li>use switch statements is a great way than including else
+                        if and multi if statements
+                    </li>
+                    <li>use @ in PHP code helps slow down the error
+                        suppression
+                    </li>
+                    <li>consider database logic like (queries, views, joins,
+                        procedures) to simplify loopy PHP
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Do not you believe it?</h3>
+            </section>
+            <section>
+                <h5>Single vs. double quote</h5>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Test</td>
+                        <td>Time</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>'contains no dollar signs'</td>
+                        <td>1 ms</td>
+                    </tr>
+                    <tr>
+                        <td>"contains no dollar signs"</td>
+                        <td>1 ms</td>
+                    </tr>
+                    <tr>
+                        <td>"$variables $are $replaced"</td>
+                        <td>8 ms</td>
+                    </tr>
+                    <tr>
+                        <td>$variables . ' ' . $are . ' ' . $replaced</td>
+                        <td>10 ms</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Test</td>
+                        <td>Time</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>if ($var === '')</td>
+                        <td>3 ms</td>
+                    </tr>
+                    <tr>
+                        <td>if ('' === $var)</td>
+                        <td>3 ms</td>
+                    </tr>
+                    <tr>
+                        <td>$haystack[0] === 'n'</td>
+                        <td>> 0 ms</td>
+                    </tr>
+                    <tr>
+                        <td>strpos($haystack, $needle) === 0</td>
+                        <td>> 0 ms</td>
+                    </tr>
+                    <tr>
+                        <td>str_replace($search, $replace, $subject)</td>
+                        <td>1 ms</td>
+                    </tr>
+                    <tr>
+                        <td>preg_replace("/$search/", $replace, $subject)</td>
+                        <td>4 ms</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <h5>Read Loop:foreach() vs. for() vs. while(list() =
+                    each())</h5>
+                <p>Given is a Hash array with 100 elements, 24byte key and 10k
+                    data per entry</p>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Function</td>
+                        <td>Total time (µs)</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>foreach($aHash as $val);</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>while(list(,$val) = each($aHash));</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>foreach($aHash as $key => $val);</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>while(list($key,$val) = each($aHash));</td>
+                        <td>16</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>foreach($aHash as $key=>$val) $tmp[] =
+                            $aHash[$key];
+                        </td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>while(list($key) = each($aHash)) $tmp[] =
+                            $aHash[$key]
+                        </td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>Get key-/ value-array: array_keys() /
+                            array_values()
+                        </td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>$key = array_keys($aHash);<br/>
+                            $size = sizeOf($key);<br/>
+                            for ($i=0; $i<$size; $i++) $tmp[] = $aHash[$key[$i]]
+                        </td>
+                        <td>6</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <h5>Modify Loop: foreach() vs. for vs. while(list() =
+                    each())</h5>
+                <p>Given again is a Hash array with 100 elements, 24byte key and
+                    10k data per entry.</p>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Function</td>
+                        <td>Total time (µs)</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>foreach($aHash as $key=>$val) $aHash[$key] .= "a";
+                        </td>
+                        <td>281</td>
+                    </tr>
+                    <tr>
+                        <td>while(list($key) = each($aHash)) $aHash[$key] .=
+                            "a";
+                        </td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>$key = array_keys($aHash);<br/>
+                            $size = sizeOf($key);<br/>
+                            for ($i=0; $i<$size; $i++) $aHash[$key[$i]] .= "a";
+                        </td>
+                        <td>9</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <h3>more info</h3>
+                <ul>
+                    <li>
+                        <a href="http://www.phpbenchmarks.com/">PHPBenchmarks</a>
+                    </li>
+                    <li><a href="https://phpbench.com/">PHPBench.com</a></li>
+                </ul>
+            </section>
+        </section>
+        <!-- Third step -->
+        <section>
+            <section>
+                <h2>Drupal optimisation</h2>
+            </section>
+            <section>
+                <p>Some examples or tips:</p>
+                <ul>
+                    <li>regularly check updates</li>
+                    <li>configure cron job</li>
+                    <li>aggregation/combine CSS&Javascript files</li>
+                    <li>make sure all cache table are clearing</li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>enable cache options in performance page</li>
+                    <li>cache whenever possible</li>
+                    <li>image optimization</li>
+                    <li>lazy load images</li>
+                    <li>theme optimization</li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>optimizing MySQL</li>
+                    <li>try CDN</li>
+                    <li>cleanup unused modules/themes</li>
+                    <li>remove unnecessary contents and others</li>
+                </ul>
+            </section>
+            <section>
+                <ul>
+                    <li>use cache modules</li>
+                    <li>be careful with the anti-spam modules</li>
+                    <li>Browser caching <br/>
+                        (such as enabling Gzip compression and
+                        adding expire headers)
+                    </li>
+                </ul>
+            </section>
+        </section>
+        <!-- Four step -->
+        <section>
+            <section>
+                <h2>PHP caching</h2>
+                <p>As you know that PHP scripts recompile continuously till the
+                    entire script gets cached. It would be great if you install
+                    a PHP caching tool which eliminates compile time and
+                    improves code performance by 25-100%.</p>
+            </section>
+            <section>
+                <ul>
+                    <li>Alternative PHP Cache (APC)</li>
+                </ul>
+            </section>
+        </section>
+        <!-- Five step -->
+        <section>
+            <section>
+                <h2>Drupal Cache</h2>
+            </section>
+            <section>
+                <ul>
+                    <li>Page caching</li>
+                    <li>Views caching</li>
+                    <li>Browser caching (such as enabling Gzip compression and
+                        adding expire headers)
+                    </li>
+                    <li>Reverse Proxy server (es. Varnish, Cache Expiration)
+                    </li>
+                </ul>
+            </section>
+        </section>
+        <!-- Six step -->
+        <section>
+            <section>
+                <h2>Tools</h2>
+            </section>
+            <section>
+                <p>Code profiling is one of the optimal ways to find out the
+                    code area that takes too much time to process and what are
+                    the bottlenecks. You can make it happen with Xdebug
+                    debugger.</p>
+            </section>
+        </section>
     </div>
 </div>
 
