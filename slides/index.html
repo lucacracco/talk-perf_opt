@@ -73,6 +73,12 @@
                     <li>integration with third system</li>
                 </ul>
             </section>
+            <section>
+                <p>More:<br/>
+                    <a href="https://joind.in/event/phpday-2018/performance-optimisation-how-do-i-go-about-it">
+                        Performance optimisation: how do I go about it?</a>
+                </p>
+            </section>
         </section>
         <!-- Second step -->
         <section>
@@ -370,9 +376,58 @@
                     improves code performance by 25-100%.</p>
             </section>
             <section>
+                <h3>Caching Techniques</h3>
                 <ul>
-                    <li>Alternative PHP Cache (APC)</li>
+                    <li>Caching content</li>
+                    <li>Memory Cache</li>
+                    <li>Database Cache</li>
                 </ul>
+            </section>
+            <section>
+                <h3>Memory Cache</h3>
+                <ul>
+                    <li>Opcode Cache</li>
+                    <li>Alternative PHP Cache (APC)</li>
+                    <li>Memcached</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Database cache</h3>
+                <ul>
+                    <li><b>query_cache_type</b>: whether to enable caching. Set
+                        to 0 if you want to disable, 1 to enable for all
+                        cacheable queries except those that begin with SELECT
+                        SQL_NO_CACHE. And 2 to cache only for cacheable queries
+                        that begin with SELECT SQL_CACHE
+                    </li>
+                    <li><b>query_cache_limit</b>: limit caching for a specific
+                        result set. If the results returned from the query
+                        exceeds the value set in this option then it won’t be
+                        cache
+                    </li>
+                    <li><b>query_cache_size</b>: the amount of memory allocated
+                        for caching results
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3>Caching Libraries</h3>
+                <ul>
+                    <li>PHPFastCache</li>
+                    <li>Doctrine/Cache</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Other:</h3>
+                <ul>
+                    <li>Apcu</li>
+                    <li>MongoDB</li>
+                    <li>Redis</li>
+                    <li>.....</li>
+                </ul>
+                <p>
+                    <a href="http://www.php-cache.com/en/latest/">PHP Cache</a>
+                </p>
             </section>
         </section>
         <!-- Five step -->
@@ -384,10 +439,31 @@
                 <ul>
                     <li>Page caching</li>
                     <li>Views caching</li>
+                    <li>(D8) Cacheability metadata (tags, context, max-age)</li>
+                    <li>(D8) Auto-placeholdering/Lazy builders</li>
+                    <li>(D8) Internal Page Cache:
+                        Caches pages for anonymous users. Use when an external
+                        page cache is not available.
+                    </li>
+                    <li>(D8) Internal Dynamic Page Cache:
+                        Caches pages for any user, handling dynamic content
+                        correctly.
+                    </li>
+                    <li>(D8) Bigpipe</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Drupal7?</h3>
+                <h4>Not found :(</h4>
+                <ul>
                     <li>Browser caching (such as enabling Gzip compression and
                         adding expire headers)
                     </li>
                     <li>Reverse Proxy server (es. Varnish, Cache Expiration)
+                    </li>
+                    <li>
+                        <a href="https://www.drupal.org/project/boost">
+                            Boost module</a>
                     </li>
                 </ul>
             </section>
@@ -396,12 +472,61 @@
         <section>
             <section>
                 <h2>Tools</h2>
+                <ul>
+                    <li>monitoring</li>
+                    <li>load testing / benchmarking</li>
+                    <li>stress test</li>
+                    <li>profiling</li>
+                </ul>
             </section>
             <section>
+                <h3>Examples tools</h3>
+                <ul>
+                    <li>go-wrk</li>
+                    <li>k6</li>
+                    <li>pewpew</li>
+                    <li>jmeter</li>
+                    <li>gatling+taurus</li>
+                    <li>ApacheBench</li>
+                    <li>curl-loader</li>
+                    <li>httperf</li>
+                    <li>vegeta</li>
+                </ul>
+            </section>
+            <section>
+                <h3>xDebug</h3>
                 <p>Code profiling is one of the optimal ways to find out the
                     code area that takes too much time to process and what are
                     the bottlenecks. You can make it happen with Xdebug
                     debugger.</p>
+            </section>
+            <section>
+                <h3>For older</h3>
+                <pre><code class="php">
+                    $start_time = microtime(true);
+                    // do stuff...
+                    $end_time = microtime(true);
+                    $time_taken = $end_time - $start_time;
+                </code></pre>
+            </section>
+            <section>
+                <h4>Diagnostics before diagnosis</h4>
+                <ul>
+                    <li><a href="https://github.com/symm/vape">VAPE</a></li>
+                    <li><a href="https://github.com/Brunty/cigar">Cigar</a></li>
+                    <li>XhProf</li>
+                    <li>Blackfire</li>
+                    <li>
+                        <a href="https://github.com/arnaud-lb/php-memory-profiler">
+                            Php Memory profiler
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/BitOne/php-meminfo">
+                            PHP MemInfo
+                        </a>
+                    </li>
+                </ul>
             </section>
         </section>
     </div>
