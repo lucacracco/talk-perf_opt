@@ -126,6 +126,10 @@ fabric.properties
 .idea/httpRequests
 
 ### Projdelects
+docker-compose.override.yml
 /.idea
 /reveal.js
 /slides/demo.html
+/test/apache-jmeter
+/test/jmeter.log
+/test/reports
